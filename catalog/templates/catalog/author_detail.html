@@ -4,13 +4,14 @@
   <h1>Title: {{ author.title }}</h1>
 
 
-  <p><strong>Nombre:</strong> <a href="">{{ author.first_name }}</a></p> <!-- author detail link not yet defined -->
-  <p><strong>Apellido:</strong> {{ author.last_name  }}</p>
+  <p><strong>Nombres:</strong> <a href="">{{ author.first_name }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Apellidos:</strong> {{ author.last_name  }}</p>
   <p><strong>Fecha de Nacimiento:</strong> {{ author.date_of_birth }}</p>  
-  <p><strong>libros:</strong> {% for title in Book.title.all %} {{ title }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  	</p>  
+  <p><strong>Libros:</strong> {% for title in Book.title.all %} {{ title }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  	</p>  
 
   <div style="margin-left:20px;margin-top:20px">
    
+    <hr>
     <hr>
       
     
