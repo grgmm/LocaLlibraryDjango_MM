@@ -30,6 +30,8 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+<<<<<<< HEAD
+=======
 
 class AuthorListView(generic.ListView):
     model = Author
@@ -37,3 +39,4 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+>>>>>>> release/corregir_autor_detail_enlaces
