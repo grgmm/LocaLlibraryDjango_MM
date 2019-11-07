@@ -107,6 +107,9 @@ class Author(models.Model):
 
     def __str__(self):
         """
-        String para representar el Objeto Modelo
+        String para representar el Objeto modelo
         """
         return '%s, %s' % (self.last_name, self.first_name)
+
+    class Meta:
+        ordering = ['first_name']
