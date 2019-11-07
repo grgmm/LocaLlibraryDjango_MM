@@ -30,3 +30,13 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+<<<<<<< HEAD
+=======
+
+class AuthorListView(generic.ListView):
+    model = Author
+    paginate_by = 5
+
+class AuthorDetailView(generic.DetailView):
+    model = Author
+>>>>>>> release/corregirgit
