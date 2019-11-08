@@ -21,6 +21,7 @@ class Genre(models.Model):
         return self.name
 
 
+
 class Book(models.Model):
     """
     Modelo que representa un libro (pero no un Ejemplar específico).
@@ -40,11 +41,15 @@ class Book(models.Model):
     # ManyToManyField, porque un género puede contener muchos libros y un libro puede cubrir varios géneros.
     # La clase Genre ya ha sido definida, entonces podemos especificar el objeto arriba.
     
+      
+    
     def __str__(self):
         """
         String que representa al objeto Book
         """
         return self.title
+        class Meta:
+            ordering = ['title']
     
     
     def get_absolute_url(self):
@@ -53,13 +58,14 @@ class Book(models.Model):
         """
         return reverse('book-detail', args=[str(self.id)])
 
+        
 
 
 
 import uuid # Requerida para las instancias de libros únicos
 
 class BookInstance(models.Model):
-    """
+    """ 
     Modelo que representa una copia específica de un libro (i.e. que puede ser prestado por la biblioteca).
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID único para este libro particular en toda la biblioteca")
@@ -84,6 +90,7 @@ class BookInstance(models.Model):
         """
         String para representar el Objeto del Modelo
         """
+        
         return '%s (%s)' % (self.id,self.book.title)
 
 
@@ -97,6 +104,9 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField('Died', null=True, blank=True)
+   
+    
+
     
     def get_absolute_url(self):
         """
@@ -111,5 +121,9 @@ class Author(models.Model):
         """
         return '%s, %s' % (self.last_name, self.first_name)
 
-    class Meta:
-        ordering = ['first_name']
+
+        class Meta:
+            ordering = ['first_name']
+ 
+  
+   
