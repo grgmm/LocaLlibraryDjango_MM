@@ -1,6 +1,7 @@
 from django.conf.urls import url
-
 from . import views
+from django.contrib import admin
+from django.urls import include, path
 
 
 urlpatterns = [
@@ -12,4 +13,3 @@ urlpatterns = [
     url(r'^author/(?P<pk>\d+)$', views.AuthorDetailView.as_view(), name='author-detail'),
 
 ]
-
