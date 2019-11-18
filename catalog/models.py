@@ -1,6 +1,10 @@
 from django.db import models
 from factory.faker import faker
 from django.urls import reverse #Used to generate URLs by reversing the URL patterns
+from django.contrib.auth.models import User
+from datetime import date
+import uuid # Requerida para las instancias de libros únicos
+
 
     
 
@@ -56,7 +60,6 @@ class Book(models.Model):
 
 
 
-import uuid # Requerida para las instancias de libros únicos
 
 class BookInstance(models.Model):
     """
@@ -66,15 +69,20 @@ class BookInstance(models.Model):
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True) 
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
-
-    LOAN_STATUS = (
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(max_length=1, choices=(
         ('m', 'Maintenance'),
         ('o', 'On loan'),
         ('a', 'Available'),
         ('r', 'Reserved'),
-    )
+    ), blank=True, default='m', help_text='Disponibilidad del libro')
+    
+@property
+def is_overdue(self):
+    if self.due_back and date.today() > self.due_back:
+        return True
+    return False
 
-    status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Disponibilidad del libro')
 
     class Meta:
         ordering = ["due_back"]
@@ -84,9 +92,7 @@ class BookInstance(models.Model):
         """
         String para representar el Objeto del Modelo
         """
-        return '%s (%s)' % (self.id,self.book.title)
-
-
+       
 
 
 class Author(models.Model):

@@ -12,6 +12,8 @@ import datetime
 
 from .forms import RenewBookForm
 
+from django.contrib.auth.decorators import permission_required
+
 @permission_required('catalog.can_mark_returned')
 def renew_book_librarian(request, pk):
     """
@@ -60,9 +62,6 @@ def index(request):
         request,
         'index.html',
         
-        #context={'num_books':num_books,'num_instances':num_instances,'num_instances_available':num_instances_available,'num_authors':num_authors},
-
-
         context={'num_books':num_books,'num_instances':num_instances,'num_instances_available':num_instances_available,'num_authors':num_authors,
             'num_visitas':num_visitas}, # num_visits appended
     )
