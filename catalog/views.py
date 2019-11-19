@@ -1,21 +1,23 @@
 from django.shortcuts import render
 from django.views import generic
-
-# Create your views here.
 from .models import Book, Author, BookInstance, Genre
 from django.contrib.auth.decorators import permission_required
-
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import datetime
-
 from .forms import RenewBookForm
-
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 
 @permission_required('catalog.can_mark_returned')
+@login_required
 def renew_book_librarian(request, pk):
+
+
     """
     View function for renewing a specific BookInstance by librarian
     """
@@ -42,6 +44,9 @@ def renew_book_librarian(request, pk):
         form = RenewBookForm(initial={'renewal_date': proposed_renewal_date,})
 
     return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst':book_inst})
+
+
+@login_required
 def index(request):
     """
     Función vista para la página inicio del sitio.
@@ -58,6 +63,7 @@ def index(request):
     request.session['num_visitas'] = num_visitas+1
     
     # Renderiza la plantilla HTML index.html con los datos en la variable contexto
+
     return render(
         request,
         'index.html',
@@ -67,14 +73,12 @@ def index(request):
     )
 
 
-
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 5
+    paginate_by = 5 
 
 class BookDetailView(generic.DetailView):
     model = Book
-
 
 class AuthorListView(generic.ListView):
     model = Author
@@ -82,4 +86,20 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+
+
+class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+    """
+    Generic class-based view listing books on loan to current user. 
+    """
+    model = BookInstance
+    template_name ='catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+
+
+
+
 
